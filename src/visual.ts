@@ -40,84 +40,73 @@ import DataViewTable = powerbi.DataViewTable;
 import DataViewTableRow = powerbi.DataViewTableRow;
 import PrimitiveValue = powerbi.PrimitiveValue;
 
+import * as d3 from 'd3';
+type Selection<T extends d3.BaseType> = d3.Selection<T, any, any, any>;
+
 import { VisualSettings } from "./settings";
 
 export class Visual implements IVisual {
     // HTMLElement - базовый интерфейс для взаимодействия с html элементами   
     private settings: VisualSettings;
-    private target: HTMLElement;
-    private generalDiv: HTMLElement;
+    private createdVisual: Selection<HTMLElement>;
+    private visualFrame: Selection<HTMLElement>;
+    
+
     private table: HTMLParagraphElement;
     private events: powerbi.extensibility.IVisualEventService;
 
     constructor(options: VisualConstructorOptions) {
-        // element - свойство VisualConstructorOptions, которое содержит в себе HTML элемент с нашим визуалом
-        this.target = options.element;
-        console.log('Visual initialized.', options.host);
-        // Add table to visual
-        if (document) {
-            this.table = document.createElement("table");
-            this.target.appendChild(this.table);
-        }
+        this.createdVisual = d3
+            .select(options.element)
+            .append('div')
+            .classed('createdVisualFrame', true);
     }
 
-    public update(options: VisualUpdateOptions) {  
+    public update(options: VisualUpdateOptions) {
+        console.log('Update started');  
+        this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
+        let viewport = options.viewport;
+        this.createdVisual
+            .attr('width', viewport.width)
+            .attr('height', viewport.height);
+                
+        console.log('Width and height are setted');
+        
         const dataView: DataView = options.dataViews[0];
         const tableDataView: DataViewTable = dataView.table;
         const columnsTableDataView = tableDataView.columns;
         const rowsTableDataView = tableDataView.rows;
       
-        console.log('Now we are in update method');
-
-
-        if (!options.dataViews
-            && !dataView
-            && !tableDataView
-            && !rowsTableDataView
-            && !columnsTableDataView
-            && !dataView.metadata
-        ) {
-            console.log('Test 1 FAILED. No data to draw table.');
-            return;
-        }              
-
-        // Processing constant addition of rows to the bottom of table
-        while (this.table.firstChild) {
-            this.table.removeChild(this.table.firstChild);
-        }
-
-        // Add headers row
-        // Structure: thead (header area) => tr (header row) => th (header cell)
-        const tableHeaderArea = document.createElement("thead");
-        const tableHeaderRow = document.createElement("tr");
+        d3.selectAll('.headersRow').remove();
+        let headersRow: Selection<HTMLElement> = this.createdVisual
+            .append('div')
+            .classed('headersRow', true);
+               
         columnsTableDataView.forEach(
             (column: DataViewMetadataColumn) => {
-                const tableHeaderColumn = document.createElement("th");
-                tableHeaderColumn.innerText = column.displayName
-                tableHeaderRow.appendChild(tableHeaderColumn);
+                headersRow
+                    .append('div')
+                    .classed('headersCell', true)
+                    .text(column.displayName);
             }
         );
-        tableHeaderArea.appendChild(tableHeaderRow);
-        this.table.appendChild(tableHeaderArea);
         
-        // Add rows and data
-        // Structure: tbody (body area) => tr (data row) => td (data cell)
-        const tableBodyArea = document.createElement("tbody");
-
+        d3.selectAll('.tableRow').remove();
         rowsTableDataView.forEach(
             (row: DataViewTableRow) => {
-                const tableRow = document.createElement("tr");
+                const tableRow: Selection<HTMLElement> = this.createdVisual
+                    .append('div')
+                    .classed('tableRow', true);
                 row.forEach(
                     (columnValue: PrimitiveValue) => {
-                        const cell = document.createElement("td");
-                        cell.innerText = ( columnValue == null ? "" : columnValue.toString() );
-                        tableRow.appendChild(cell);
+                        tableRow
+                            .append('div')
+                            .classed('tableCell', true)
+                            .text(columnValue == null ? "" : columnValue.toString())
                     }
                 )
-                tableBodyArea.appendChild(tableRow);
             }
-        );
-        this.table.appendChild(tableBodyArea);
+        )
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {
@@ -129,10 +118,6 @@ export class Visual implements IVisual {
      * objects and properties you want to expose to the users in the property pane.
      *
      */
-
-    public destroy(): void {
-       console.log('Visual has been destroyed') 
-    }
     
     // List of all active formatting options
     public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {

@@ -19,5 +19,29 @@ th {
 }
 
 div {
-    overflow: auto;
+    .createdVisualFrame {
+        overflow: auto;
+        display: table;
+        background-color: hotpink;
+
+        .headersRow {
+            display: table-header-group;
+        }
+
+        .headersCell {
+            display: table-cell;
+        }
+
+        .tableRow {
+            display: table-row;
+        }
+
+        .tableCell {
+            display: table-cell;
+            padding-left: 3px;
+            padding-top: 1px;
+            padding-right: 3px;
+            padding-bottom: 1px;
+        }
+    }
 }
