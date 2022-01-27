@@ -49,11 +49,6 @@ export class Visual implements IVisual {
     // HTMLElement - базовый интерфейс для взаимодействия с html элементами   
     private settings: VisualSettings;
     private createdVisual: Selection<HTMLElement>;
-    private visualFrame: Selection<HTMLElement>;
-    
-
-    private table: HTMLParagraphElement;
-    private events: powerbi.extensibility.IVisualEventService;
 
     constructor(options: VisualConstructorOptions) {
         this.createdVisual = d3
@@ -69,16 +64,20 @@ export class Visual implements IVisual {
         this.createdVisual
             .attr('width', viewport.width)
             .attr('height', viewport.height);
-                
+        
         console.log('Width and height are setted');
         
         const dataView: DataView = options.dataViews[0];
         const tableDataView: DataViewTable = dataView.table;
         const columnsTableDataView = tableDataView.columns;
         const rowsTableDataView = tableDataView.rows;
-      
-        d3.selectAll('.headersRow').remove();
-        let headersRow: Selection<HTMLElement> = this.createdVisual
+        
+        d3.selectAll('.tableArea').remove();      
+        const tableArea = this.createdVisual
+            .append('div')
+            .classed('tableArea', true)
+
+        const headersRow: Selection<HTMLElement> = tableArea
             .append('div')
             .classed('headersRow', true);
                
@@ -91,10 +90,13 @@ export class Visual implements IVisual {
             }
         );
         
-        d3.selectAll('.tableRow').remove();
+        const tableRowsArea = tableArea
+            .append('div')
+            .classed('tableRowsArea', true)
+
         rowsTableDataView.forEach(
             (row: DataViewTableRow) => {
-                const tableRow: Selection<HTMLElement> = this.createdVisual
+                const tableRow: Selection<HTMLElement> = tableRowsArea
                     .append('div')
                     .classed('tableRow', true);
                 row.forEach(
