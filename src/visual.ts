@@ -46,27 +46,21 @@ type Selection<T extends d3.BaseType> = d3.Selection<T, any, any, any>;
 import { VisualSettings } from "./settings";
 
 export class Visual implements IVisual {
-    // HTMLElement - базовый интерфейс для взаимодействия с html элементами   
     private settings: VisualSettings;
     private createdVisual: Selection<HTMLElement>;
 
     constructor(options: VisualConstructorOptions) {
+    
         this.createdVisual = d3
             .select(options.element)
             .append('div')
             .classed('createdVisualFrame', true);
     }
-
+    
     public update(options: VisualUpdateOptions) {
         console.log('Update started');  
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        let viewport = options.viewport;
-        this.createdVisual
-            .attr('width', viewport.width)
-            .attr('height', viewport.height);
-        
-        console.log('Width and height are setted');
-        
+ 
         const dataView: DataView = options.dataViews[0];
         const tableDataView: DataViewTable = dataView.table;
         const columnsTableDataView = tableDataView.columns;
