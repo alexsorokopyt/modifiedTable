@@ -50,24 +50,19 @@ th {
 // }
 
 .createdVisualFrame {
-    overflow: auto;
-    
     display: table;
-    
+    overflow: scroll;
     font-family: "Segoe UI", wf_segoe-ui_normal, helvetica, arial, sans-serif;
     font-size: 13.3333px;
     
     word-wrap: break-word;
-    cursor: default;
-    
+    cursor: default;   
+    pointer-events: auto;
+    user-select: none;
 }
 
 .headersRow {
-    display: table-header-group;
-    
-    pointer-events: auto;
-    user-select: none;
-    
+    display: table-header-group;    
 }
 .headersCell {
     display: table-cell;
@@ -77,6 +72,7 @@ th {
 }
 .tableRowsArea {
     display: table-row-group;
+    overflow: scroll;
 }
 .tableRow {
     display: table-row;
@@ -88,6 +84,7 @@ th {
     display: table-cell;
 
     line-height: normal;
+
     padding-top: 1px;
     padding-right: 5px;
     padding-bottom: 2px;
