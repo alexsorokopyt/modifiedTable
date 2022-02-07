@@ -53,11 +53,7 @@ export class Visual implements IVisual {
     private reactRoot: React.ComponentElement<any, any>;
 
     constructor(options: VisualConstructorOptions) {
-        const emptyRowsDataView: DataViewTableRow[] = [];
-        this.reactRoot = React.createElement(TableBody, {rowsDataView: emptyRowsDataView});
         this.target = options.element;
-        
-        // ReactDOM.render(this.reactRoot, this.target);
     }
     
     public update(options: VisualUpdateOptions) {
@@ -71,7 +67,8 @@ export class Visual implements IVisual {
                 React.createElement(
                     TableBody, 
                     {
-                        rowsDataView: rowsTableDataView
+                        rowsDataView: rowsTableDataView,
+                        headersDataView: columnsTableDataView
                     }
                 ), 
                 this.target
