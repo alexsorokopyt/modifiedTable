@@ -1,14 +1,17 @@
 import * as React from 'react';
 
-export interface TableCellProperities {
-    cell: string;
+import powerbi from "powerbi-visuals-api";
+import PrimitiveValue = powerbi.PrimitiveValue;
+
+interface TableCellProperities {
+    cellValue: PrimitiveValue;
 }
 
-export interface TableCellState {
+interface TableCellState {
     editMode: boolean;
 }
 
-export const initialCellState: TableCellState = {
+const initialCellState: TableCellState = {
     editMode: false
 }
 
@@ -36,7 +39,7 @@ export class Cell extends React.Component<TableCellProperities, TableCellState> 
     renderDefaultCell = () => {
         return (
             <div className='tableCell' onDoubleClick={this.handleDoubleClick}>
-                {this.props.cell} 
+                {this.props.cellValue} 
             </div>
         )
     };

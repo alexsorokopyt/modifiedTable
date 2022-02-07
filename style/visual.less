@@ -30,6 +30,7 @@ th {
     user-select: none;
 }
 
+
 .headersRow {
     display: table-header-group;    
 }
@@ -39,26 +40,28 @@ th {
     box-shadow: rgb(17, 141, 255) 0px -6px 0px -5px inset, black 0px 0px 0px -5px inset, black 0px 0px 0px -5px inset, black 0px 0px 0px -5px inset;
     box-sizing: border-box;
 }
-.tableRowsArea {
+.tableBody {
     display: table-row-group;
     overflow: scroll;
 }
 .tableRow {
     display: table-row;
+    
+    &:nth-child(even) {
+        background-color: #EEEDED;
+    }
 }
-.tableRow:nth-child(even) {
-    background-color: #EEEDED;
-}
+
 .tableCell {
     display: table-cell;
 
-    // line-height: normal;
+    line-height: normal;
 
-    // padding-top: 1px;
-    // padding-right: 5px;
-    // padding-bottom: 2px;
-    // padding-left: 5px;
+    padding-top: 1px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    padding-left: 5px;
 
-    // box-shadow: inset 0px 0 0 -5px black, inset -0px 0 0 -5px black, inset 0 -6px 0 -5px #E5E5E5, inset 0 0px 0 -5px black;
-    // box-sizing: border-box;
+    box-shadow: inset 0px 0 0 -5px black, inset -0px 0 0 -5px black, inset 0 -6px 0 -5px #E5E5E5, inset 0 0px 0 -5px black;
+    box-sizing: border-box;
 }

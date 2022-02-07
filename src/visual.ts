@@ -40,94 +40,43 @@ import DataViewTable = powerbi.DataViewTable;
 import DataViewTableRow = powerbi.DataViewTableRow;
 import PrimitiveValue = powerbi.PrimitiveValue;
 
-import * as d3 from 'd3';
-type Selection<T extends d3.BaseType> = d3.Selection<T, any, any, any>;
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Cell, initialCellState } from './tableCellComponent';
-import { Row } from './tableRowComponent';
-
+import { TableBody } from "./tableBodyComponent";
+import { Row } from "./tableRowComponent";
+import { Cell } from "./tableCellComponent";
 
 import { VisualSettings } from "./settings";
 
 export class Visual implements IVisual {
     private target: HTMLElement;
     private reactRoot: React.ComponentElement<any, any>;
-    
-    // private settings: VisualSettings;
-    // private createdVisual: Selection<HTMLElement>;
 
     constructor(options: VisualConstructorOptions) {
-        this.reactRoot = React.createElement(Cell, {});
+        const emptyRowsDataView: DataViewTableRow[] = [];
+        this.reactRoot = React.createElement(TableBody, {rowsDataView: emptyRowsDataView});
         this.target = options.element;
         
-        ReactDOM.render(this.reactRoot, this.target);
-
-        // this.createdVisual = d3
-        //     .select(options.element)
-        //     .append('div')
-        //     .classed('createdVisualFrame', true);
+        // ReactDOM.render(this.reactRoot, this.target);
     }
     
-
-
     public update(options: VisualUpdateOptions) {
         if(options.dataViews && options.dataViews[0]){
             const dataView: DataView = options.dataViews[0];
-            
+            const tableDataView: DataViewTable = dataView.table;
+            const columnsTableDataView: DataViewMetadataColumn[] = tableDataView.columns;
+            const rowsTableDataView: DataViewTableRow[] = tableDataView.rows;
+
             ReactDOM.render(
-                React.createElement(Row, {cells: ['1', '2', '3']}),// React.createElement(Row, {cells: ["1", "2", "3", "4"]}), 
+                React.createElement(
+                    TableBody, 
+                    {
+                        rowsDataView: rowsTableDataView
+                    }
+                ), 
                 this.target
             );
         }
-
-
-        // console.log('Update started');  
-        // this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
- 
-        // const dataView: DataView = options.dataViews[0];
-        // const tableDataView: DataViewTable = dataView.table;
-        // const columnsTableDataView = tableDataView.columns;
-        // const rowsTableDataView = tableDataView.rows;
-        
-        // d3.selectAll('.tableArea').remove();      
-        // const tableArea = this.createdVisual
-        //     .append('div')
-        //     .classed('tableArea', true)
-
-        // const headersRow: Selection<HTMLElement> = tableArea
-        //     .append('div')
-        //     .classed('headersRow', true);
-               
-        // columnsTableDataView.forEach(
-        //     (column: DataViewMetadataColumn) => {
-        //         headersRow
-        //             .append('div')
-        //             .classed('headersCell', true)
-        //             .text(column.displayName);
-        //     }
-        // );
-        
-        // const tableRowsArea = tableArea
-        //     .append('div')
-        //     .classed('tableRowsArea', true)
-
-        // rowsTableDataView.forEach(
-        //     (row: DataViewTableRow) => {
-        //         const tableRow: Selection<HTMLElement> = tableRowsArea
-        //             .append('div')
-        //             .classed('tableRow', true);
-        //         row.forEach(
-        //             (columnValue: PrimitiveValue) => {
-        //                 tableRow
-        //                     .append('div')
-        //                     .classed('tableCell', true)
-        //                     .text(columnValue == null ? "" : columnValue.toString())
-        //             }
-        //         )
-        //     }
-        // )
     }
 
     private static parseSettings(dataView: DataView): VisualSettings {

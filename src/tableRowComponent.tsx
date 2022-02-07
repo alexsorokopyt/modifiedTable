@@ -1,40 +1,30 @@
 import * as React from 'react';
 import Cell from './tableCellComponent';
 
-export interface TableRowProperities {
-    cells: string[]    // На вход ожидаем массив из чисел/текста
+import powerbi from "powerbi-visuals-api";
+import DataViewTableRow = powerbi.DataViewTableRow;
+import PrimitiveValue = powerbi.PrimitiveValue;
+
+interface TableRowProperities {
+    cells: DataViewTableRow
 }
 
-export interface TableRowState {
+interface TableRowState {
     
 }
 
 export class Row extends React.Component<TableRowProperities, TableRowState> {
-    // Конструктор компонента
     constructor(props) {
-        super(props);
+        super(props)
     };
 
-    // updateRow = (text, i) => {
-    //     let newCells = this.props.cells;
-    //     newCells[i] = text;
-    //     this.setState({cells: newCells});
-    // };
-
-    // eachCell = (cell, i) => {
-    //     return (
-    //         <Cell key={i} cellValue={cell} />
-    //     );
-    // };
-
-    // Функция отрисовки строки таблицы
     render() {
         return (
             <div className='tableRow'>
                 { 
                     this.props.cells.map( 
-                        cell => { 
-                            return React.createElement(Cell, {cellValue: {cell}})
+                        (iterableValue) => { 
+                            return React.createElement(Cell, {cellValue: iterableValue})
                         }
                     )
                 }
@@ -43,4 +33,4 @@ export class Row extends React.Component<TableRowProperities, TableRowState> {
     }
 }
 
-export default Cell;
+export default Row;
