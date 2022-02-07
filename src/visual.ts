@@ -43,8 +43,6 @@ import PrimitiveValue = powerbi.PrimitiveValue;
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { TableBody } from "./tableBodyComponent";
-import { Row } from "./tableRowComponent";
-import { Cell } from "./tableCellComponent";
 
 import { VisualSettings } from "./settings";
 

@@ -22,7 +22,7 @@ export class Cell extends React.Component<TableCellProperities, TableCellState> 
         this.state = initialCellState;
     };
 
-    private newCellValueRef = React.createRef<HTMLTextAreaElement>();
+    private newEditValueRef = React.createRef<HTMLInputElement>();
 
     // Функция отлова двойного нажатия
     handleDoubleClick = () => {
@@ -31,12 +31,13 @@ export class Cell extends React.Component<TableCellProperities, TableCellState> 
 
     // Функция подтверждения внесения изменений в ячейку
     save = () => {
-        let newValue = this.newCellValueRef.current.value
+        let newValue = this.newEditValueRef.current.value
+        console.log(newValue);
         this.setState({editMode: false});
     };
 
     // Отрисовка стандартного вида ячейки
-    renderDefaultCell = () => {
+    renderDefaultCell = () => {      
         return (
             <div className='tableCell' onDoubleClick={this.handleDoubleClick}>
                 {this.props.cellValue} 
@@ -48,11 +49,12 @@ export class Cell extends React.Component<TableCellProperities, TableCellState> 
     renderEditMode = () => {
         return (
             <div className='tableCellEditMode'>
-                
+                <input ref={this.newEditValueRef} className="inputField" type="text" value={this.props.cellValue.toString()}></input>
+                <input type="submit" value="OK"></input>
             </div>
-        )
-        // <textarea ref={this.newCellValueRef}>{this.props.children}</textarea>
-        //         <button onClick={this.save} className='btn success'>✓</button>
+        ) 
+        // <textarea ref={this.newEditValueRef} className="edittedTableCell">{this.props.children}</textarea>
+        //<button onClick={this.save} className='btn success'>✓</button>
     };
 
     // Функция отрисовки ячейки таблицы
