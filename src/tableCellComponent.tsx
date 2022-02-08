@@ -4,60 +4,71 @@ import powerbi from "powerbi-visuals-api";
 import PrimitiveValue = powerbi.PrimitiveValue;
 
 interface TableCellProperities {
-    cellValue: PrimitiveValue;
+    cellValue: PrimitiveValue
 }
 
 interface TableCellState {
     editMode: boolean;
+    cellValue: PrimitiveValue
 }
 
-const initialCellState: TableCellState = {
-    editMode: false
-}
+
 
 export class Cell extends React.Component<TableCellProperities, TableCellState> {
-    // Конструктор компонента
     constructor(props) {
         super(props);
-        this.state = initialCellState;
+        this.state = {
+            editMode: false,
+            cellValue: this.props.cellValue
+        };
     };
 
     private newEditValueRef = React.createRef<HTMLInputElement>();
 
-    // Функция отлова двойного нажатия
     handleDoubleClick = () => {
         this.setState({editMode: !this.state.editMode});
     };
 
-    // Функция подтверждения внесения изменений в ячейку
     save = () => {
-        let newValue = this.newEditValueRef.current.value
-        console.log(newValue);
-        this.setState({editMode: false});
+        this.setState(
+            {
+                editMode: false,
+                cellValue: this.state.cellValue
+            }
+        );
     };
 
-    // Отрисовка стандартного вида ячейки
     renderDefaultCell = () => {      
         return (
             <div className='tableCell' onDoubleClick={this.handleDoubleClick}>
-                {this.props.cellValue} 
+                {this.state.cellValue} 
             </div>
         )
     };
 
-    // Отрисовка режима редактирования ячейки
+    onTodoChange(value){
+        this.setState({
+             cellValue: value
+        });
+    };
+
     renderEditMode = () => {
         return (
             <div className='tableCellEditMode'>
-                <input ref={this.newEditValueRef} className="inputField" type="text" value={this.props.cellValue.toString()}></input>
-                <input type="submit" value="OK"></input>
+                <input 
+                    ref={this.newEditValueRef} 
+                    className="inputField" 
+                    type="text" 
+                    value={this.state.cellValue.toString()} 
+                    onChange={e => this.onTodoChange(e.target.value)}
+                />
+                <button onClick={this.save} className='btn success'>✓</button>
             </div>
         ) 
         // <textarea ref={this.newEditValueRef} className="edittedTableCell">{this.props.children}</textarea>
         //<button onClick={this.save} className='btn success'>✓</button>
     };
 
-    // Функция отрисовки ячейки таблицы
     render() {
         if (this.state.editMode) {
             return this.renderEditMode ();
