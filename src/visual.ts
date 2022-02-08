@@ -30,10 +30,10 @@ import powerbi from "powerbi-visuals-api";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
-import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
+import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
-import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
+
 
 import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 import DataViewTable = powerbi.DataViewTable;
@@ -45,10 +45,12 @@ import * as ReactDOM from 'react-dom';
 import { TableBody } from "./tableBodyComponent";
 
 import { VisualSettings } from "./settings";
+import VisualObjectInstanceEnumeration = powerbi.VisualObjectInstanceEnumeration;
+import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
 
 export class Visual implements IVisual {
     private target: HTMLElement;
-    private reactRoot: React.ComponentElement<any, any>;
+    private visualSettings: VisualSettings;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
@@ -61,6 +63,10 @@ export class Visual implements IVisual {
             const columnsTableDataView: DataViewMetadataColumn[] = tableDataView.columns;
             const rowsTableDataView: DataViewTableRow[] = tableDataView.rows;
 
+            this.visualSettings = VisualSettings.parse<VisualSettings>(dataView);
+            console.log(this.visualSettings.databaseConnection.databaseType);
+            console.log(this.visualSettings.databaseConnection.connectionString);
+            
             ReactDOM.render(
                 React.createElement(
                     TableBody, 
@@ -85,8 +91,9 @@ export class Visual implements IVisual {
      */
     
     // List of all active formatting options
-    // public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
-        // return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
-    // }
+    public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstanceEnumeration {
+        const settings: VisualSettings = this.visualSettings || <VisualSettings>VisualSettings.getDefault();
+        return VisualSettings.enumerateObjectInstances(settings, options);
+    }
 
 }

@@ -12,8 +12,6 @@ interface TableCellState {
     cellValue: PrimitiveValue
 }
 
-
-
 export class Cell extends React.Component<TableCellProperities, TableCellState> {
     constructor(props) {
         super(props);
@@ -46,7 +44,7 @@ export class Cell extends React.Component<TableCellProperities, TableCellState> 
         )
     };
 
-    onTodoChange(value){
+    onInputFieldChange(value){
         this.setState({
              cellValue: value
         });
@@ -60,7 +58,7 @@ export class Cell extends React.Component<TableCellProperities, TableCellState> 
                     className="inputField" 
                     type="text" 
                     value={this.state.cellValue.toString()} 
-                    onChange={e => this.onTodoChange(e.target.value)}
+                    onChange={element => this.onInputFieldChange(element.target.value)}
                 />
                 <button onClick={this.save} className='btn success'>✓</button>
             </div>
