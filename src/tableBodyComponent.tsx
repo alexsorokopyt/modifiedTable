@@ -9,6 +9,7 @@ import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 interface TableBodyProperities {
     rowsDataView: DataViewTableRow[],
     headersDataView: DataViewMetadataColumn[]
+    viewportHeight: number
 }
 
 interface TableBodyState {
@@ -22,7 +23,7 @@ export class TableBody extends React.Component<TableBodyProperities, TableBodySt
 
     render() {
         return (
-            <div className='table'>
+            <div className='table' id='tableAreaID'>
                 <HeaderRow headersData={this.props.headersDataView} />
                 <div className='tableBody'>
                     {

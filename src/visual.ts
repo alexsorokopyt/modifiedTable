@@ -34,7 +34,6 @@ import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnume
 import VisualObjectInstance = powerbi.VisualObjectInstance;
 import DataView = powerbi.DataView;
 
-
 import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
 import DataViewTable = powerbi.DataViewTable;
 import DataViewTableRow = powerbi.DataViewTableRow;
@@ -64,9 +63,12 @@ export class Visual implements IVisual {
             const rowsTableDataView: DataViewTableRow[] = tableDataView.rows;
 
             this.visualSettings = VisualSettings.parse<VisualSettings>(dataView);
-            console.log(this.visualSettings.databaseConnection.databaseType);
-            console.log(this.visualSettings.databaseConnection.connectionString);
+            // console.log(this.visualSettings.databaseConnection.databaseType);
+            // console.log(this.visualSettings.databaseConnection.connectionString);
             
+            const viewportWidth = options.viewport.width;
+            const viewportHeight = options.viewport.height;
+
             ReactDOM.render(
                 React.createElement(
                     TableBody, 
@@ -77,6 +79,8 @@ export class Visual implements IVisual {
                 ), 
                 this.target
             );
+
+            document.getElementById("tableAreaID").style.maxHeight = Math.ceil(viewportHeight) + "px"
         }
     }
 

@@ -21,13 +21,13 @@ export class Cell extends React.Component<TableCellProperities, TableCellState> 
         };
     };
 
-    private newEditValueRef = React.createRef<HTMLInputElement>();
+    private editRef = React.createRef<HTMLInputElement>();
 
-    handleDoubleClick = () => {
+    startEditMode = () => {
         this.setState({editMode: !this.state.editMode});
     };
 
-    save = () => {
+    saveEdit = () => {
         this.setState(
             {
                 editMode: false,
@@ -36,42 +36,53 @@ export class Cell extends React.Component<TableCellProperities, TableCellState> 
         );
     };
 
-    renderDefaultCell = () => {      
-        return (
-            <div className='tableCell' onDoubleClick={this.handleDoubleClick}>
-                {this.state.cellValue} 
-            </div>
-        )
+    changeBackground(highlightedCell) {
+        highlightedCell.target.style.background = 'red';
     };
 
-    onInputFieldChange(value){
+    resetBackground(highlightedCell) {
+        highlightedCell.target.style.background = '';
+    };
+
+    renderInputField(value){
         this.setState({
              cellValue: value
         });
+    };
+
+    renderViewMode = () => {      
+        return (
+            <div 
+                className='tableCell' 
+                onDoubleClick={this.startEditMode}
+                onMouseOver={this.changeBackground}
+                onMouseLeave={this.resetBackground}
+            >
+                {this.state.cellValue} 
+            </div>
+        )
     };
 
     renderEditMode = () => {
         return (
             <div className='tableCellEditMode'>
                 <input 
-                    ref={this.newEditValueRef} 
+                    ref={this.editRef} 
                     className="inputField" 
                     type="text" 
                     value={this.state.cellValue.toString()} 
-                    onChange={element => this.onInputFieldChange(element.target.value)}
+                    onChange={element => this.renderInputField(element.target.value)}
                 />
-                <button onClick={this.save} className='btn success'>✓</button>
+                <button onClick={this.saveEdit} className='btn success'>✓</button>
             </div>
         ) 
-        // <textarea ref={this.newEditValueRef} className="edittedTableCell">{this.props.children}</textarea>
-        //<button onClick={this.save} className='btn success'>✓</button>
     };
 
     render() {
         if (this.state.editMode) {
             return this.renderEditMode ();
         } else {
-            return this.renderDefaultCell ();
+            return this.renderViewMode ();
         }
     };
 

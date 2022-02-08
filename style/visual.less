@@ -1,87 +1,64 @@
-table {
+.table {
     display: flex;
     flex-direction: column;
-}
-
-tr, td {
-    display: flex;
-    flex: 1;
-    border: 1px solid gray;
-}
-
-thead {
-    border-bottom: 0px solid gray;
-}
-
-th {
-    font-weight: bolder;
-    font-style: italic;
-}
-
-.createdVisualFrame {
-    display: table;
-    overflow: scroll;
-    font-family: "Segoe UI", wf_segoe-ui_normal, helvetica, arial, sans-serif;
-    font-size: 13.3333px;
     
-    word-wrap: break-word;
-    cursor: default;   
-    pointer-events: auto;
-    user-select: none;
-}
+    .headersRow {
+        display: table-header-group;    
+        
+        .headersCell {
+            display: table-cell;
+            padding: 1px 5px 10px;
+            box-shadow: rgb(17, 141, 255) 0px -6px 0px -5px inset, black 0px 0px 0px -5px inset, black 0px 0px 0px -5px inset, black 0px 0px 0px -5px inset;
+            box-sizing: border-box;
+        }
+    }
 
+    .tableBody {
+        // display: block;
+        // overflow: auto;
+        // max-height: 600px;
 
-.headersRow {
-    display: table-header-group;    
-}
-.headersCell {
-    display: table-cell;
-    padding: 1px 5px 10px;
-    box-shadow: rgb(17, 141, 255) 0px -6px 0px -5px inset, black 0px 0px 0px -5px inset, black 0px 0px 0px -5px inset, black 0px 0px 0px -5px inset;
-    box-sizing: border-box;
-}
-.tableBody {
-    display: table-row-group;
-    overflow: scroll;
-}
-.tableRow {
-    display: table-row;
-    
-    &:nth-child(even) {
-        background-color: #EEEDED;
+        .tableRow {
+            display: table-row;
+            
+            &:nth-child(even) {
+                background-color: #EEEDED;
+            }
+        
+            .tableCell {
+                display: table-cell;
+            
+                line-height: normal;
+            
+                padding-top: 1px;
+                padding-right: 5px;
+                padding-bottom: 2px;
+                padding-left: 5px;
+            
+                box-shadow: inset 0px 0 0 -5px black, inset -0px 0 0 -5px black, inset 0 -6px 0 -5px #E5E5E5, inset 0 0px 0 -5px black;
+                box-sizing: border-box;
+            }
+
+            .tableCellEditMode {
+                display: table-cell;
+            
+                line-height: normal;
+            
+                padding-top: 1px;
+                padding-right: 5px;
+                padding-bottom: 2px;
+                padding-left: 5px;
+            
+                box-shadow: inset 0px 0 0 -5px black, inset -0px 0 0 -5px black, inset 0 -6px 0 -5px #E5E5E5, inset 0 0px 0 -5px black;
+                box-sizing: border-box;
+            }
+        }
     }
 }
 
-.tableCell {
-    display: table-cell;
-
-    line-height: normal;
-
-    padding-top: 1px;
-    padding-right: 5px;
-    padding-bottom: 2px;
-    padding-left: 5px;
-
-    box-shadow: inset 0px 0 0 -5px black, inset -0px 0 0 -5px black, inset 0 -6px 0 -5px #E5E5E5, inset 0 0px 0 -5px black;
-    box-sizing: border-box;
-}
 
 .inputField {
    display: table-cell;
-}
-
-.tableCellEditMode {
-    display: table-cell;
-
-    line-height: normal;
-
-    padding-top: 1px;
-    padding-right: 5px;
-    padding-bottom: 2px;
-    padding-left: 5px;
-
-    box-shadow: inset 0px 0 0 -5px black, inset -0px 0 0 -5px black, inset 0 -6px 0 -5px #E5E5E5, inset 0 0px 0 -5px black;
-    box-sizing: border-box;
 }
 
 button {
@@ -97,4 +74,10 @@ button {
     color: white;
     background-color: #1e90ff;
     transform: translateX(2px);
+}
+
+#tableAreaID {
+    display: block;
+    overflow: auto;
+    // max-height: 600px;
 }
